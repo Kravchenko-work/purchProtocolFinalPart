@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <link
+            rel="stylesheet"
+            href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
+    />
+    <link rel="stylesheet" href="/build/style.css" />
+</head>
+<body>
+<div id="app">
+    <main-wrapper>
+        <a-form
+                form-title="Протокол рассмотрения и оценки первых частей заявок"
+
+                window-code = "/tradezone/Customer/Purchase/ZK/purchProtocolFinalPart"
+                parm="6789124"
+                name="purchaseprotocol"
+                :form-components="$refs"
+                :read-only="false"
+                :show-link-info-panel="true"
+                success-next-link=""
+
+        >
+            <template v-slot="{formData, submitStatus}">
+                <a-div-hidden block-title="Общие сведения о закупке">
+                    <a-text
+                            label-title="Номер извещения"
+                            v-model="formData.purchcode"
+                    ></a-text>
+                    <a-text
+                            label-title="Наименование объекта закупки"
+                            v-model="formData.purchname"
+                    ></a-text>
+                    <a-text
+                            label-title="Начальная (максимальная) цена контракта"
+                            v-model="formData.purchamount + ' ' +  formData.currency"
+                    ></a-text>
+                    <a-text
+                            label-title="Невозможно определить количество (объем) закупаемых товаров, работ, услуг"
+                            v-model="formData.isAmountUndef ? 'Да' : 'Нет'"
+                    ></a-text>
+                    <a-text
+                            label-title="Дата и время получения заявок Заказчиком"
+                            v-model="formData.req4custdate"
+                    ></a-text>
+                    <a-text
+                            label-title="Дата окончания рассмотрения заявок"
+                            v-model="formData.requestacceptdate"
+                    ></a-text>
+
+                </a-div-hidden>
+
+                <a-div-hidden block-title="Информация о заседании комиссиии">
+                    <a-date-picker
+                            label-title="Дата и время процедуры"
+                            v-model="formData.date"
+                            date-type="datetime"
+
+                            :submit-error="submitStatus"
+                            ref="date"
+                    >
+                    </a-date-picker>
+                </a-div-hidden>
+
+                <a-div-hidden block-title="Сведения о комиссии">
+                    <a-text-link
+                            value="Редактировать комиссию"
+                            href="#"
+
+                    ></a-text-link>
+                    <a-table>
+                        <template v-slot:head>
+                            <a-row>
+                                <a-col>
+                                    <a-text
+                                            label-title="Члены комиссии"
+                                    ></a-text>
+                                </a-col>
+                            </a-row>
+                        </template>
+                        <template v-slot:body>
+                            <div style="width: 100%">
+                                <a-row v-for="(member, index) in formData.commission.members.member" :key="index">
+                                    <a-col>
+                                        <a-text v-model="member.memNumber">
+                                        </a-text>
+                                    </a-col>
+                                    <a-col>
+                                        <a-text v-model="member.lastName"></a-text>
+                                    </a-col>
+                                    <a-col>
+                                        <a-text v-model="member.firstName"></a-text>
+                                    </a-col>
+                                    <a-col>
+                                        <a-text v-model="member.middleName"></a-text>
+                                    </a-col>
+                                    <a-col>
+                                        <a-text v-model="member.memroleName"></a-text>
+                                    </a-col>
+                                    <a-col>
+                                        <span>Присутствовал</span>
+                                    </a-col>
+                                </a-row>
+                            </div>
+                        </template>
+                    </a-table>
+                </a-div-hidden>
+
+                <h2>Сведения о заявках на участие в запросе котировок в электронной форме</h2>
+                <a-sub-object v-model="formData.supplierpurchaserequest14cust">
+                    <template #default>
+                        <a-sub-object v-model="formData.supplierpurchaserequest14cust.supprequest">
+                            <template #default>
+                                <a-table>
+                                    <template v-slot:head>
+                                        <a-row>
+                                            <a-col></a-col>
+                                            <a-col>Идентификационный номер заявки</a-col>
+                                            <a-col>Дата и время регистрации заявки</a-col>
+                                            <a-col>Наименование участника</a-col>
+                                            <a-col>Предлагаемая итоговая цена</a-col>
+                                            <a-col>Рассмотрение заявки</a-col>
+                                            <a-col>Результат рассмотрения</a-col>
+                                        </a-row>
+                                    </template>
+                                    <template v-slot:body>
+                                        <a-row>
+                                            <a-col>
+                                                <a-dropdown-link>
+                                                    <a-text-link
+                                                            value="Просмотр"
+                                                            href="#"
+                                                    ></a-text-link>
+                                                    <a-text-link
+                                                            value="Проверить контрагента"
+                                                            href="#"
+                                                    ></a-text-link>
+                                                    <a-text-link
+                                                            value="Проверить в РНП"
+                                                            href="#"
+                                                    ></a-text-link>
+                                                    <a-text-link
+                                                            value="Проверить в РМСП"
+                                                            href="#"
+                                                    ></a-text-link>
+                                                    <a-text-link
+                                                            value="Проверить по п.7.1 ч.1 ст.31"
+                                                            href="#"
+                                                    ></a-text-link>
+                                                    <a-text-link
+                                                            value="Проверить СРО"
+                                                            href="#"
+                                                    ></a-text-link>
+                                                </a-dropdown-link>
+                                            </a-col>
+                                            <a-col>47</a-col>
+                                            <a-col>24.06.2021 14:21</a-col>
+                                            <a-col>Закрытое акционерное общество ЛАНИТ </a-col>
+                                            <a-col>555.00</a-col>
+                                            <a-col>
+                                                <div class="protocolResults__modal">
+                                                    <a-pop-up button-name="Рассмотрение"
+                                                              title="Рассмотрение заявки"
+                                                              :button="true"
+                                                    >
+                                                        <a-table>
+                                                            <template v-slot:body>
+                                                                <a-row>
+                                                                    <a-col>
+                                                                        Код объекта закупки
+                                                                    </a-col>
+                                                                    <a-col>
+                                                                        {{formData.purchcode}}
+                                                                    </a-col>
+                                                                </a-row>
+                                                                <a-row>
+                                                                    <a-col>
+                                                                        Идентификационный номер заявки
+                                                                    </a-col>
+                                                                    <a-col>
+                                                                        formData.reqNo
+                                                                    </a-col>
+                                                                </a-row>
+                                                            </template>
+                                                        </a-table>
+
+                                                        <a-div-hidden block-title="Решение комиссии по заявке">
+
+                                                            <div class="protocolResults__solutionCommissionOnApplication">
+                                                                <h3>Общий результат рассмотрения заявки</h3>
+                                                                <div class="protocolResults__solutionCommissionOnApplication-checkbox">
+                                                                    <a-checkbox-mark
+                                                                            label-title="Единогласно"
+                                                                            :required="false"
+                                                                            v-model="formData.unanimously"
+                                                                            @change="changeUnanimously(formData)"
+                                                                    >
+                                                                    </a-checkbox-mark>
+                                                                </div>
+                                                                <div class="protocolResults__error-wrapper">
+                                                                    <a-static-select
+                                                                            @change="onChangeMainSelect(formData)"
+                                                                            :options-value="[{value: 1, label:'Соотвествует'}, {value: 2, label:'Отклонена'}]"
+                                                                            v-model="formData.select"
+                                                                    >
+                                                                    </a-static-select>
+                                                                    <div v-if="error.common" class="protocolResults__error">Это поле необходимо заполнить</div>
+                                                                </div>
+                                                            </div>
+
+                                                            <a-table>
+                                                                <template v-slot:head>
+                                                                    <a-row>
+                                                                        <a-col>N</a-col>
+                                                                        <a-col>Член комиссии</a-col>
+                                                                        <a-col>Роль в комиссии</a-col>
+                                                                        <a-col>Решение по заявке</a-col>
+                                                                    </a-row>
+                                                                </template>
+                                                                <template v-slot:body>
+                                                                    <a-row v-for="(message, index) in formData.commission.members.member">
+                                                                        <a-col>
+                                                                            {{message.memNumber}}
+                                                                        </a-col>
+                                                                        <a-col >
+                                                                            <div class="protocolResults__solutionCommissionOnApplication__memberOfComission">
+                                                                                <span>{{message.lastName}}</span>
+                                                                                <span>{{message.firstName}}</span>
+                                                                                <span>{{message.middleName}}</span>
+                                                                            </div>
+                                                                        </a-col>
+                                                                        <a-col>
+                                                                            {{message.memroleName}}
+                                                                        </a-col>
+                                                                        <a-col>
+                                                                            <div class="protocolResults__error-wrapper">
+                                                                                <a-static-select
+                                                                                        @change="onChangeSelectPreference(index, message, formData)"
+                                                                                        :options-value="[{value: 1, label:'Соотвествует'}, {value: 2, label:'Отклонена'}]"
+                                                                                        v-model="message.select"
+                                                                                >
+                                                                                </a-static-select>
+                                                                                <div v-if="error.members[index]" class="protocolResults__error">Это поле необходимо заполнить</div>
+                                                                            </div>
+                                                                        </a-col>
+                                                                    </a-row>
+                                                                </template>
+                                                            </a-table>
+                                                        </a-div-hidden>
+
+                                                        <a-div-hidden v-if="isCheck" block-title="Пояснение">
+
+                                                            <a-duplicate-el v-model="formData.reasons">
+                                                                <template v-slot:default="{ duplicate }">
+                                                                    <a-table>
+                                                                        <template v-slot:body>
+                                                                            <a-row  v-for = "(item, index) in duplicate"
+                                                                                    :index = "index"
+                                                                                    :delete-row = true
+                                                                                    :data-row = "duplicate"
+                                                                            >
+                                                                                <div class="modal__blockExplanation">
+                                                                                    <div class="modal__select protocolResults__error-wrapper">
+                                                                                        <a-static-select
+                                                                                                @change="error.reasons[index]=false"
+                                                                                                label-title="Причина"
+                                                                                                :required="false"
+                                                                                                :options-value="[
+                                                                                             {value: 1, label:'На основании п. 1 ч. 11 ст. 82.1 Закона 44-ФЗ'},
+                                                                                             {value: 2, label:'На основании п. 2 ч. 11 ст. 82.1 Закона 44-ФЗ'},
+                                                                                             {value: 3, label:'На основании п. 3 ч. 11 ст. 82.1 Закона 44-ФЗ'},
+                                                                                             {value: 4, label:'На основании п. 4 ч. 11 ст. 82.1 Закона 44-ФЗ'},
+                                                                                             {value: 5, label:'На основании п. 5 ч. 11 ст. 82.1 Закона 44-ФЗ'}
+                                                                                        ]"
+                                                                                                v-model="item.reason"
+                                                                                        >
+                                                                                        </a-static-select>
+                                                                                        <div v-if="error.reasons[index]" class="protocolResults__error" style="top: 80px;">Это поле необходимо заполнить</div>
+                                                                                    </div>
+
+                                                                                    <a-textarea
+                                                                                            label-title="Комментарий"
+                                                                                            v-model="item.comment"
+                                                                                            :required="false"
+                                                                                    >
+                                                                                    </a-textarea>
+                                                                                </div>
+
+                                                                            </a-row>
+                                                                        </template>
+                                                                    </a-table>
+                                                                </template>
+                                                            </a-duplicate-el>
+
+                                                        </a-div-hidden>
+
+                                                        <a-div-hidden block-title="Соотвествие требованиям, ограничениям и преференциям" class="complianceRequirement">
+                                                            <a-table>
+                                                                <template v-slot:head>
+                                                                    <a-row>
+                                                                        <a-col>
+                                                                            Тип
+                                                                        </a-col>
+                                                                        <a-col>
+                                                                            Наименование
+                                                                        </a-col>
+                                                                        <a-col col-width="35%">
+                                                                            Соотвествие
+                                                                        </a-col>
+                                                                    </a-row>
+                                                                </template>
+                                                                <template v-slot:body>
+                                                                    <a-row v-for="(preference, index) in formData.JB2149.preference">
+                                                                        <a-col>{{preference.prefType}}</a-col>
+                                                                        <a-col>{{preference.Name}}</a-col>
+                                                                        <a-col>
+                                                                            <div class="protocolResults__error-wrapper">
+
+                                                                                <a-static-select
+                                                                                        @change="error.preference[index]=false"
+                                                                                        :options-value="[{value: 1, label:'Соотвествует'}, {value: 2, label:'Отклонена'}]"
+                                                                                        v-model="preference.select"
+                                                                                >
+                                                                                </a-static-select>
+                                                                                <div v-if="error.preference[index]" class="protocolResults__error">Это поле необходимо заполнить</div>
+                                                                            </div>
+                                                                        </a-col>
+                                                                    </a-row>
+                                                                </template>
+                                                            </a-table>
+                                                            <div class="totalValueAdvantage">
+                                                                <h2>Итоговая величина предоставленного преимущества:</h2>
+                                                                <a-input></a-input>
+                                                            </div>
+                                                        </a-div-hidden>
+
+                                                        <a-button class="ReviewTask__save" @click="saveSolutionComission(formData)" label="Сохранить"></a-button>
+                                                    </a-pop-up>
+                                                </div>
+                                            </a-col>
+                                            <a-col>
+                                                <a-input
+                                                        v-model="formData.supplierpurchaserequest14cust.supprequest.acceptResult"
+                                                        :readonly="true"
+                                                        ref="resultAccordance"
+                                                        :submit-error="submitStatus"
+                                                >
+
+                                                </a-input>
+                                            </a-col>
+                                        </a-row>
+                                    </template>
+                                </a-table>
+                            </template>
+                        </a-sub-object>
+
+                    </template>
+                </a-sub-object>
+
+
+
+
+                <h2>Документы</h2>
+
+                <a-table>
+                    <template v-slot:head>
+                        <a-row>
+                            <a-col>
+                                Тип файла
+                            </a-col>
+                            <a-col>
+                                Файл
+                            </a-col>
+                        </a-row>
+                    </template>
+                    <template v-slot:body>
+                        <a-row>
+                            <a-col>
+                                <a-static-select
+                                        :options-value="[{value: 1, label:'Мурманск'},{value: 2, label:'Калуга'},{value: 3, label:'Якутск'},{value: 4, label:'Самара (Депфин)'},{value: 5, label:'Смоленск'},]"
+                                        label-title="Протокол подведения итогов"
+                                        placeholder="Выбери элемент из списка"
+                                        v-model="formData.select4"
+
+                                        :submit-error="submitStatus"
+                                        ref="protocolResult"
+                                >
+                                </a-static-select>
+                            </a-col>
+                            <a-col>
+                                <a-file-loader
+                                    v-model="formData.protocoldoc"
+                                    name="protocoldoc"
+                                    :submit-status="formData.submitStatus"
+                                    ref="protocoldoc"
+                                ></a-file-loader>
+                            </a-col>
+                        </a-row>
+
+                        <a-row>
+                            <a-col>
+                                Дополнительные документы
+                            </a-col>
+                            <a-col>
+                                <a-file-loader
+                                        v-model="formData.additionaldocs"
+                                        name="additionaldoc"
+                                        :multiple="true"
+                                >
+                                </a-file-loader>
+                            </a-col>
+                        </a-row>
+                    </template>
+                </a-table>
+
+<!--                <a-checkbox-mark-->
+<!--                        :submit-error="submitStatus"-->
+<!--                        label-title="Направить протокол на подписание всем членам комиссии"-->
+<!--                        ref="chekbox"-->
+<!--                >-->
+<!--                </a-checkbox-mark>-->
+            </template>
+        </a-form>
+    </main-wrapper>
+</div>
+</body>
+</html>
+<script src="https://cdn.sberbank-ast.ru/vue/dist/vue.js"></script>
+<script src="https://cdn.sberbank-ast.ru/vue-i18n/dist/vue-i18n.js"></script>
+<script src="https://cdn.sberbank-ast.ru/element-ui/lib/index.js"></script>
+<script src="https://cdn.sberbank-ast.ru/element-ui/lib/umd/locale/ru-RU.js"></script>
+<script src="/build/core.js"></script>
+
+<script>
+    ELEMENT.locale(ELEMENT.lang.ruRU);
+    const app = new Vue({
+        i18n: new VueI18n({}),
+        el: "#app",
+        data: {
+            reviewResult: '',
+            isCheck: false,
+            isShow: true,
+            error: {
+                common: false,
+                members: [],
+                reasons: [],
+                preference: []
+            },
+            notSave: true,
+        },
+        methods: {
+            onChangeSelectPreference(index, preference, formData){
+                this.error.members[index]=false;
+                if (formData.select !== preference.select){
+                    formData.unanimously = '';
+                }
+            },
+            onChangeMainSelect(formData){
+                this.error.common = false;
+
+                if (!formData.select){return}
+                let preference = formData.JB2149.preference;
+                for (let index in preference){
+                    //this.error.preference.splice(index, 1, false);
+                    this.error.preference[index]=false;
+                    preference[index].select = 1;
+                }
+
+                if (Number(formData.select) === 1) {
+                    this.isCheck = false;
+                    if (!formData.unanimously) return;
+                    let members = formData.commission.members.member;
+                    for (let index in members){
+                        this.error.members[index]=false;
+                        members[index].select = formData.select;
+                    }
+                }
+                else if (Number(formData.select) === 2){
+                    this.isCheck= true;
+                    if (!formData.unanimously) return;
+                    let members = formData.commission.members.member;
+                    for (let index in members){
+                        this.error.members[index]=false;
+                        //this.error.members.splice(index, 1, false);
+                        members[index].select = formData.select;
+                    }
+                }
+            },
+            changeUnanimously(formData){
+                if (!formData.unanimously) return;
+                for (let elem of formData.commission.members.member){
+                    elem.select = formData.select;
+                }
+                let members = formData.commission.members.member;
+                for (let index in members){
+                    this.error.members[index]=false;
+                    //this.error.members.splice(index, 1, false);
+                    members[index].select = formData.select;
+                }
+            },
+            saveSolutionComission(formData){
+                this.notSave = false;
+                if (!formData.select){
+                    this.error.common = true;
+                    this.notSave = true;
+                }
+
+                for (let index in formData.commission.members.member){
+                    if (!formData.commission.members.member[index].select){
+                        //this.error.members[index] = true;
+                        this.error.members.splice(index, 1, true)
+                        this.notSave = true;
+                    }
+                }
+                let preference = formData.JB2149.preference;
+                for (let index in preference){
+                    if (!preference[index].select){
+                        // this.error.preference[index] = true;
+                        this.error.preference.splice(index, 1, true);
+                        this.notSave = true;
+                    }
+                }
+                for (let index in formData.reasons){
+                    if (!formData.reasons[index].reason){
+                        //this.error.reasons[index]=true; Интересная ситуация - почему-то выше работает,!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        // но только здесь возникает проблема с реактивностью
+                        this.error.reasons.splice(index, 1, true);
+                        this.notSave = true;
+                    }
+                }
+
+                if (!this.notSave) {
+                    console.log(formData.select);
+                    let string = formData.select == 1 ? 'Соотвествует' : formData.select == 2 ? 'Отклонена' : '';
+                    this.$set(formData.supplierpurchaserequest14cust.supprequest, 'acceptResult', string);
+                    let event = new Event("click");
+                    let elem = document.querySelector('.modal-close');
+                    elem.dispatchEvent(event);
+                }
+            }
+        }
+    });
+</script>
+
+<style>
+    /*  Модальное окно */
+    .protocolResults__solutionCommissionOnApplication {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom:10px;
+    }
+    .protocolResults__solutionCommissionOnApplication-checkbox .table-element{
+        display: flex;
+        margin-right: 5px;
+    }
+    .protocolResults__solutionCommissionOnApplication__memberOfComission span {
+        margin-right: 5px;
+    }
+    .protocolResults__solutionCommissionOnApplication__memberOfComission span:last-child{
+        margin: 0;
+    }
+    .protocolResults__error-wrapper{
+        padding-bottom: 32px;
+        position: relative;
+    }
+    .protocolResults__error {
+        color: #FF0000;
+        padding-top: 3px;
+        text-align: center;
+
+        position: absolute;
+        top: 20px;
+    }
+    /* Модальное окно */
+
+    .totalValueAdvantage{
+        margin-top: 15px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .ReviewTask__save{
+        margin-top: 20px;
+    }
+    .ReviewTask__notUsed{
+        background-color: grey;
+    }
+    .ReviewTask__notUsed:hover{
+        cursor:default;
+    }
+    .modal__blockExplanation{
+        display: flex;
+        justify-content: space-around;
+
+        margin-bottom: 20px;
+    }
+    .modal__blockExplanation:last-child{
+        margin: 0;
+    }
+    .modal__blockExplanation *{
+        flex: 1 0 0;
+    }
+    .modal__blockExplanation *:first-child{
+        flex: 1 0 60%;
+        padding: 0 5px;
+    }
+    .modal__select{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 5px;
+    }
+    .modal__select .el-select{
+        width: 100%;
+        padding: 0 5px;
+    }
+</style>
