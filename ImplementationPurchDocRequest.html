@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <link
+            rel="stylesheet"
+            href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
+    />
+    <link rel="stylesheet" href="/build/style.css" />
+</head>
+<body>
+<div id="app">
+    <main-wrapper>
+        <a-form
+                form-title="Запрос отчета по истории участия в аукционах"
+
+                window-code = "/tradezone/Supplier/ImplementationPurchDocRequest"
+                name="supplier"
+                action-type = "template"
+                action-code = "default"
+                parm = "-2"
+
+                @data-call-back="converSelectToInt"
+        >
+            <template v-slot:default="{formData, submitStatus}">
+                <a-div-hidden block-title="Заявление участника">
+                    <div style="display: flex; margin-bottom: 10px;">
+                        <p style="flex:0 0 20%">Запрос истории участия в аукционах</p>
+                        <p>{{formData.supplier.description}}</p>
+                    </div>
+
+                    <a-date-picker
+                        label-title="Начало отчетного периода (по дате публикации аукциона)"
+                        v-model="formData.periodfrom"
+                        :required="false"
+                    >
+                    </a-date-picker>
+                    <a-date-picker
+                            label-title="Окончание отчетного периода"
+                            v-model="formData.periodto"
+                            :required="false"
+                    >
+                    </a-date-picker>
+                </a-div-hidden>
+
+                <a-div-hidden block-title="Основные сведения">
+                    <a-text
+                            label-title="ИНН"
+                           v-model="formData.supplier.inn"
+                    ></a-text>
+                    <a-input
+                            label-title="ИНН (нерезидент)"
+                            v-model="formData.supplier.noresidentRuInn"
+                            :required="false"
+                    ></a-input>
+                    <a-text
+                            label-title="КПП"
+                            v-model="formData.supplier.kpp"
+                    >
+                    </a-text>
+                    <a-text
+                            label-title="Признак головной организации"
+                            v-model="formData.supplier.ispowerorg"
+                    >
+                    </a-text>
+                    <a-text
+                            label-title="ОГРН"
+                            v-model="formData.supplier.ogrn"
+                    >
+                    </a-text>
+                    <a-text
+                            label-title="Подразделение"
+                            v-model="formData.supplier.unit"
+                    >
+                    </a-text>
+                    <a-text
+                            label-title="Полное наименование"
+                            v-model="formData.supplier.FullName"
+                    >
+                    </a-text>
+                    <a-text
+                            label-title="Сокращенное наименование"
+                            v-model="formData.supplier.NickName"
+                    >
+                    </a-text>
+                    <a-text
+                            label-title="Организационно-правовая форма"
+                            v-model="formData.supplier.opf"
+                    >
+                    </a-text>
+                    <a-text
+                            label-title="E-mail"
+                            v-model="formData.supplier.email"
+                    >
+                    </a-text>
+                    <a-text
+                            label-title="Дополнительный E-mail"
+                            v-model="formData.supplier.secondemail"
+                    >
+                    </a-text>
+                    <a-text
+                            label-title="Телефон"
+                            v-model="formData.supplier.phone"
+                    >
+                    </a-text>
+                    <a-text
+                            label-title="Факс"
+                            v-model="formData.supplier.fax"
+                    >
+                    </a-text>
+                    <a-text
+                            label-title="Адрес сайта организации в сети Интернет"
+                            v-model="formData.supplier.site"
+                    >
+                    </a-text>
+                    <a-static-select
+                            label-title="Субъект малого предпринимательства"
+                            :options-value="[{value:0, label:'Нет'},{value:1, label:'Да'}]"
+                            :required="false"
+                            v-model="formData.supplier.smp"
+                    >
+                    </a-static-select>
+                    <a-text
+                            label-title="Сформированный Фактический адрес / Почтовый Адрес"
+                            v-model="formData.supplier.bufactaddress"
+                    >
+                    </a-text>
+                    <a-text
+                            label-title="Сформированный Юридический адрес / Место нахождения"
+                            v-model="formData.supplier.bujuraddress"
+                    >
+                    </a-text>
+                </a-div-hidden>
+            </template>
+        </a-form>
+    </main-wrapper>
+</div>
+</body>
+</html>
+<script src="https://cdn.sberbank-ast.ru/vue/dist/vue.js"></script>
+<script src="https://cdn.sberbank-ast.ru/vue-i18n/dist/vue-i18n.js"></script>
+<script src="https://cdn.sberbank-ast.ru/element-ui/lib/index.js"></script>
+<script src="https://cdn.sberbank-ast.ru/element-ui/lib/umd/locale/ru-RU.js"></script>
+<script src="/build/core.js"></script>
+
+<script>
+    ELEMENT.locale(ELEMENT.lang.ruRU);
+    const app = new Vue({
+        i18n: new VueI18n({}),
+        el: "#app",
+        data: {
+            testProperty: 'Нет',
+        },
+        methods: {
+            converSelectToInt(formData){
+                formData.supplier.smp = Number(formData.supplier.smp);
+            }
+        }
+    });
+</script>
+
+<style>
+
+</style>
